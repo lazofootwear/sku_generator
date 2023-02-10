@@ -35,7 +35,7 @@ case $Model in
 
   HYPE)
     color_codes="OBLK SBLU CPUR SGRN SPNK CBLU IBLU SORG"
-    colors_with_both_last="OLBK SBLU"    
+    colors_with_both_last="OBLK SBLU"    
     prefix="LZ-SK-HYPE-FST-"
     ;;
 esac
