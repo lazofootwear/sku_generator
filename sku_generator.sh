@@ -3,6 +3,10 @@
 # code that takes in a model and spits out skus
 Model=$1
 
+Last=$2
+
+
+
 female_last="050 055 060 065 070 075 080 085 090 095 100 105 110 115"
 male_last="120 125 135 145"
 both_last="$female_last $male_last"
@@ -30,25 +34,39 @@ case $Model in
   LUNA)
     color_codes="XWBB XBGB XORP XPBG XWPB XTBB"
     colors_with_both_last=""
-    prefix="LZ-BT-COSM-XXX-"
+    prefix="LZ-BT-LUNA-XXX-"
     ;;
 
   HYPE)
     color_codes="OBLK SBLU CPUR SGRN SPNK CBLU IBLU SORG"
-    colors_with_both_last="OBLK SBLU"    
+    colors_with_both_last="OBLK SBLU"
     prefix="LZ-SK-HYPE-FST-"
     ;;
 esac
 
 for color in $color_codes; do
-  if [[ "$colors_with_both_last" =~ .*"$color".* ]]; then
-    for size in $both_last; do
-      echo "$prefix$color-$size"
-    done
-  else
+  if [[ "$Last" == "F" ]]; then
     for size in $female_last; do
       echo "$prefix$color-$size"
     done
+
+  elif [[ "$Last" == "M" ]]; then
+    if [[ "$colors_with_both_last" =~ .*"$color".* ]]; then
+      for size in $male_last; do
+        echo "$prefix$color-$size"
+      done
+    fi
+  fi
+
+  if [[ "$Last" == "B" ]]; then
+    if [[ "$colors_with_both_last" =~ .*"$color".* ]]; then
+      for size in $both_last; do
+        echo "$prefix$color-$size"
+      done
+    else
+      for size in $female_last; do
+        echo "$prefix$color-$size"
+      done
+    fi
   fi
 done
-
