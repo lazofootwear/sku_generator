@@ -1,77 +1,3 @@
-#!/bin/bash
-
-# code that takes in a model and spits out skus
-Model=$1
-
-Last=$2
-
-
-
-female_last="050 055 060 065 070 075 080 085 090 095 100 105 110 115"
-male_last="120 125 135 145"
-both_last="$female_last $male_last"
-
-case $Model in
-
-  HALO)
-    color_codes="OBHG ABSG MPMW PGHG FGOW GPIB EGLB APCO CPNP"
-    colors_with_both_last="OBHG PGHG"
-    prefix="LZ-SK-HALO-TNG-"
-    ;;
-
-  SIRN)
-    color_codes="OBLK GBWN NPUR GPMB COAP LBVG RROB"
-    colors_with_both_last="OBLK"
-    prefix="LZ-BT-SIRN-XXX-"
-    ;;
-
-  COSM)
-    color_codes="OBLK CBLU CPUR SPNK LBLU DGRN"
-    colors_with_both_last=""
-    prefix="LZ-BT-COSM-XXX-"
-    ;;
-
-  LUNA)
-    color_codes="XWBB XBGB XORP XPBG XWPB XTBB"
-    colors_with_both_last=""
-    prefix="LZ-BT-LUNA-XXX-"
-    ;;
-
-  HYPE)
-    color_codes="OBLK SBLU CPUR SGRN SPNK CBLU IBLU SORG"
-    colors_with_both_last="OBLK SBLU"
-    prefix="LZ-SK-HYPE-FST-"
-    ;;
-esac
-
-for color in $color_codes; do
-  if [[ "$Last" == "F" ]]; then
-    for size in $female_last; do
-      echo "$prefix$color-$size"
-    done
-
-  elif [[ "$Last" == "M" ]]; then
-    if [[ "$colors_with_both_last" =~ .*"$color".* ]]; then
-      for size in $male_last; do
-        echo "$prefix$color-$size"
-      done
-    fi
-  fi
-
-  if [[ "$Last" == "B" ]]; then
-    if [[ "$colors_with_both_last" =~ .*"$color".* ]]; then
-      for size in $both_last; do
-        echo "$prefix$color-$size"
-      done
-    else
-      for size in $female_last; do
-        echo "$prefix$color-$size"
-      done
-    fi
-  fi
-done
-
-parker:sku_generator parker$ cat sku_generator.sh
 #!/opt/homebrew/bin/bash
 
 # code that takes in a model a last (either F, M, or B) and spits out a description
@@ -89,6 +15,7 @@ both_last="$female_last $male_last"
 #setup an associative array to map color code to color description
 declare -A map_color_code_to_color_description=()
 
+#HALO
 map_color_code_to_color_description[OBHG]="Obsidian Black/Hematite Grey"
 map_color_code_to_color_description[ABSG]="Aquamarine Blue/Smokey Quartz Grey"
 map_color_code_to_color_description[MPMW]="Morganite Pink/Milky Way White"
@@ -98,6 +25,43 @@ map_color_code_to_color_description[GPIB]="Galaxy Purple/Iolite Blue"
 map_color_code_to_color_description[EGLB]="Emerald Green/Labradorite Blue"
 map_color_code_to_color_description[APCO]="Andromeda Pink/Carnelian Orange"
 map_color_code_to_color_description[CPNP]="Cosmic Pink/Nebula Purple"
+
+#SIRN
+map_color_code_to_color_description[OBLK]="Obsidian Black"
+map_color_code_to_color_description[GBWN]="Goldstone Brown"
+map_color_code_to_color_description[NPUR]="Nebula Purple"
+map_color_code_to_color_description[GPMB]="Galaxy Purple/Moonstone Blue"
+map_color_code_to_color_description[COAP]="Carnelian Orange/Andromeda Pink"
+map_color_code_to_color_description[LBVG]="Labradorite Blue/Verdite Green"
+map_color_code_to_color_description[RROB]="Rhodolite Red/Obsidian Black"
+
+#COSM
+#map_color_code_to_color_description[OBLK]="Obsidian Black"
+map_color_code_to_color_description[CBLU]="Celestite Blue"
+map_color_code_to_color_description[CPUR]="Cartwheel Purple"
+map_color_code_to_color_description[SPNK]="Supernova Pink"
+map_color_code_to_color_description[LBLU]="Labradorite Blue"
+map_color_code_to_color_description[DGRN]="Dioptase Green"
+
+#LUNA
+map_color_code_to_color_description[XWBB]="Milky Way White/Labradorite Blue/Moonstone Blue"
+map_color_code_to_color_description[XBGB]="Asteroid Brown/Moldavite Green/Obsidian Black"
+map_color_code_to_color_description[XORP]="Sunstone Orange/Garnet Red/Supernova Pink"
+map_color_code_to_color_description[XPBG]="Rose Quartz Pink/Kyanite Blue/Serpentine Green"
+map_color_code_to_color_description[XWPB]="Opal White/Morganite Pink/Labradorite Blue"
+map_color_code_to_color_description[XTBB]="Quartz Tan/Obsidian Black/Goldstone Brown"
+
+#HYPE
+#map_color_code_to_color_description[OBLK]="Obsidian Black"
+map_color_code_to_color_description[SBLU]="Sapphire Blue"
+#map_color_code_to_color_description[CPUR]="Cartwheel Purple"
+map_color_code_to_color_description[SGRN]="Serpentine Green"
+#map_color_code_to_color_description[SPNK]="Supernova Pink"
+#map_color_code_to_color_description[CBLU]="Celestite Blue"
+map_color_code_to_color_description[IBLU]="Iolite Blue"
+map_color_code_to_color_description[SORG]="Sunstone Orange"
+
+
 
 declare -A map_size_code_to_size_description=()
 
